@@ -1,1 +1,1 @@
-const projectName = "html-starter"
+const PROJECT_NAME = "html-starter"

@@ -9,25 +9,28 @@ function stopPropagation(event) {
 }
 
 function save(key, value) {
-  localStorage.setItem(`${projectName}_${key}`, JSON.stringify(value));
+  localStorage.setItem(`${PROJECT_NAME}_${key}`, JSON.stringify(value));
 }
 
 function load(key, defaultValue) {
-  const savedValue = localStorage.getItem(`${projectName}_${key}`);
+  const savedValue = localStorage.getItem(`${PROJECT_NAME}_${key}`);
   if (savedValue == null) return defaultValue;
   return JSON.parse(savedValue);
 }
 
 function reset(key) {
-  localStorage.removeItem(`${projectName}_${key}`);
+  localStorage.removeItem(`${PROJECT_NAME}_${key}`);
 }
 
-function generateId() {
-  return Math.random().toString(36).slice(2, 11);
+function sleep(ms) {
+  if (ms <= 0) return Promise.resolve();
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-function getFileName(file) {
-  return decodeURIComponent(file.name).split("/").pop().split(".").slice(0, -1).join(".");
+function randomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 function getFileDataUrl(file) {
@@ -62,4 +65,30 @@ function toggleFullscreen(force) {
   } else if (force !== false) {
     document.documentElement.requestFullscreen();
   }
+}
+
+function getRandomItem(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
+
+function getUniqueItems(arr, count) {
+  if (!Array.isArray(arr) || count <= 0) return [];  
+  const k = Math.min(count, arr.length);
+  const result = [...arr];
+  for (let i = 0; i < k; i++) {
+    const randIndex = Math.floor(Math.random() * (result.length - i)) + i;
+    [result[i], result[randIndex]] = [result[randIndex], result[i]];
+  }
+  return result.slice(0, k);
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    // Pick a random index from 0 to i
+    const j = Math.floor(Math.random() * (i + 1));
+    
+    // Swap elements at indices i and j
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
 }
